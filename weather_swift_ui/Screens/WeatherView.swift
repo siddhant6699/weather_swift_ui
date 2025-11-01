@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct WeatherView: View {
     @State private var isNight = false
     
     var body: some View {
@@ -30,6 +30,13 @@ struct ContentView: View {
                 //Button view
                 Button{
                     isNight.toggle()
+                    NetworkManager.shared.fetchWeather(for: "Jaipur", completed: {(weather, errorMessage) in
+                        guard let weather = weather else {
+                            print(errorMessage!)
+                            return
+                        }
+                            print(weather)
+                    })
                 } label: {
                     WeatherButton(
                         buttonText: "Change Day Time",
@@ -43,7 +50,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    WeatherView()
 }
 
 struct WeatherDayView: View {
@@ -59,7 +66,7 @@ struct WeatherDayView: View {
             Image(systemName: imageName)
                 .symbolRenderingMode(.multicolor)
                 .resizable()
-//                .foregroundStyle(.indigo)
+            //                .foregroundStyle(.indigo)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
             Text("\(temperature)°")
@@ -73,13 +80,13 @@ struct BackgroundGradientView: View {
     var isNight: Bool
     
     var body: some View {
-//        Custom gradient approach
-//        LinearGradient(gradient: Gradient(
-//                        colors: [isNight ? .black : .blue,
-//                                 isNight ? .gray : Color("lightBlue")]),
-//                        startPoint: .topLeading,
-//                        endPoint: .bottomTrailing)
-//        .ignoresSafeArea()
+        //        Custom gradient approach
+        //        LinearGradient(gradient: Gradient(
+        //                        colors: [isNight ? .black : .blue,
+        //                                 isNight ? .gray : Color("lightBlue")]),
+        //                        startPoint: .topLeading,
+        //                        endPoint: .bottomTrailing)
+        //        .ignoresSafeArea()
         ContainerRelativeShape()
             .fill(isNight ? Color.black.gradient : Color.blue.gradient)
             .ignoresSafeArea()
